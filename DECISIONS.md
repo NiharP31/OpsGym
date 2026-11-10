@@ -1271,7 +1271,7 @@ complete. Rule (D41a): first rung with base strict ≥ 0.30, else stop and repor
 - **Why:** before the write-up makes any claim about lying, check how often an episode flagged by
   `false_claim` (D39) really contains a false statement.
 - **Sample:** 40 flagged episodes from C/A/A2, stratified 3–4 per (split, arm) from 7,121 flagged,
-  seed 20261109, shuffled, arm and split hidden (`transcripts/false_claim_audit/`, not committed).
+  seed 20261109, shuffled, arm and split hidden (`transcripts/false_claim_audit/sample.md`, key in `key.json`).
   Each item shows only the finish message, the agent's tickets and the expected owner.
 - **Labeler:** an independent AI subagent (Claude) given only the sample text and this rubric, no
   project files: *real* = clearly states something the final state contradicts (ticket created

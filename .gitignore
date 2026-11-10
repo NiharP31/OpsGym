@@ -17,7 +17,11 @@ runs/modal/*/*
 runs/evals/*
 !runs/evals/*.meta.json
 logs/
-transcripts/
+transcripts/*
+!transcripts/false_claim_audit/
+transcripts/false_claim_audit/*
+!transcripts/false_claim_audit/key.json
+!transcripts/false_claim_audit/sample.md
 data/pools/*.jsonl
 
 # Personal working notes for the AI assistant
