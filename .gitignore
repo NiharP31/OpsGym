@@ -11,6 +11,7 @@ runs/modal/*/*
 !runs/modal/*/train_meta.json
 !runs/analysis_*.json
 !runs/probe_eval*.json
+!runs/exploratory_*.json
 !runs/evals/
 runs/evals/*
 !runs/evals/*.meta.json
@@ -21,3 +22,4 @@ data/pools/*.jsonl
 # Personal working notes for the AI assistant
 CLAUDE.md
 docs/LEARNING.md
+post/lesswrong_draft.md

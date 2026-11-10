@@ -70,8 +70,9 @@ See [CITATION.cff](CITATION.cff), or:
 
 ## Disclosure
 
-Code was written with AI assistance (Claude Code); experiment design, decisions and interpretation
-are mine and documented in DECISIONS.md.
+Code was written with AI assistance (Claude Code). I designed the experiments and made the
+decisions, often choosing among options the assistant proposed; DECISIONS.md records each choice
+and its reasoning.
 
 ## License
 

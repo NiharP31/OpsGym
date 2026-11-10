@@ -1,6 +1,24 @@
 # OpsGym — Decisions
 
-Format: what we chose · alternatives · why · risk. Newest at the bottom.
+## How to read this log
+
+- **One entry per decision, in the order they were made** (D1 → D42, newest at the bottom).
+  Most entries follow: what was chosen · alternatives · why · risk. Entries titled "update" or
+  "addendum" revise an earlier one; later entries supersede earlier ones where they conflict.
+- **"My decision / my choice / my addition"** marks a call I made, often choosing among options
+  the assistant (Claude Code) proposed. Entries were written during the work, so some wording is
+  terse or conversational.
+- **Pre-registration.** D38, D38a, D41, D41a and D41c were written *before* the data they govern
+  existed, and each is followed by a sha256 of the block. Verify one by hashing the text from its
+  `## D…` heading line through the line before its hash line, with a leading and trailing newline
+  (`"
+" + block + "
+"`, LF line endings). These blocks are never edited; corrections go into
+  later, dated entries.
+- **Results entries** (D40, D41e) record numbers as first unblinded. The reported numbers are the
+  committed `runs/analysis_*.json`; see the README and `docs/RESULTS.md`.
+- Paths like `runs/…` and `logs/…` are relative to the repo root. Files not in git (adapters, raw
+  episodes, pools, Inspect logs) are on Hugging Face; see the README.
 
 ---
 
@@ -37,7 +55,7 @@ Format: what we chose · alternatives · why · risk. Newest at the bottom.
 - **Why:** One source of truth. The same schema also feeds the agent prompt (Phase 3) and the
   task generator (Phase 4). Validation at `step()` is the trust boundary for model output.
 - **Risk:** JSON Schema can't express cross-field rules (e.g. "owner must own this account").
-  Those belong in tool logic or the verifier, not the schema. *(Implemented in tools.py, next.)*
+  Those belong in tool logic or the verifier, not the schema. *(Implemented in `tools.py`.)*
 
 ## D4 · Dump the final DB state into every trajectory (Phase 1, 2026-11-03, my addition)
 
@@ -157,7 +175,7 @@ Format: what we chose · alternatives · why · risk. Newest at the bottom.
     `finished` instead.
   - Env holds several verifiers and reports all: unnecessary, since D4 lets us re-score offline.
 - **Why:** The reward depends only on the final world state (D4), so it's the same quantity
-  whether computed online or re-scored later. `finish_message` is kept because the day-10 sprint
+  whether computed online or re-scored later. `finish_message` is kept because a planned follow-up
   (LLM judge vs verifier) needs the agent's *claims* next to the *actual* state.
   `deepcopy` stops a verifier that mutates its input from corrupting the logged state.
 - **Risk:** Scoring truncated episodes means an agent that never finishes can still get reward.
@@ -189,7 +207,7 @@ Format: what we chose · alternatives · why · risk. Newest at the bottom.
   pytest 9.0.2), only `opsgym/` + `tests/` copied in, non-root `agent` user, default command is
   the stdio MCP server. Recommended run flags: `-i --rm --network none --read-only`.
 - **Alternatives:** No Docker (plain venv); a full sandbox per episode (gVisor/Firecracker).
-- **Why, honestly:** The agent's only way to act is the 4 tools + `finish`. It has no shell, no
+- **Why:** The agent's only way to act is the 4 tools + `finish`. It has no shell, no
   file access, no code execution. **The tool surface is the real security boundary, not the
   container.** Docker buys (1) reproducibility: same Python and deps anywhere, so results
   aren't machine-specific, and (2) defence in depth for the MCP server: no network, read-only FS,
@@ -232,7 +250,7 @@ Format: what we chose · alternatives · why · risk. Newest at the bottom.
   - `breakdown()` reports field checks on the best-matching new ticket (most fields right, ties →
     lowest id). It's for reporting only; rewards come from `passes()`.
   - `make_verifier` rejects unknown check names.
-  - Whether to also train on MEDIUM is **undecided** (my call, later).
+  - Whether to also train on MEDIUM was left open; no run trained on MEDIUM.
 - **Alternatives:** A (hand-written function per task), C (LLM judge).
 - **Why:** Loose ⊂ medium ⊂ strict by construction, so the runs differ in exactly one variable. The
   per-check breakdown makes hacks attributable. Ground truth lives in the task.
@@ -258,7 +276,7 @@ Format: what we chose · alternatives · why · risk. Newest at the bottom.
   "never correct yourself" (it never sees a rewarded correction). Revisit if correct-but-extra is
   a large share of hacks in the Phase 3 baseline.
 
-## D16 · Expected must be reachable (Phase 2, 2026-11-07) — **done** (I skipped the YOUR TURN; Claude wrote it)
+## D16 · Expected must be reachable (Phase 2, 2026-11-07) — **done** (implemented by the assistant)
 
 - **Chose:** `make_verifier` → `_check_reachable(seed)` rejects a seed whose `expected` can't be produced by
   any agent: priority not in the tool's enum, or `account_id`/`owner_id` not in the seed.
@@ -278,7 +296,7 @@ Format: what we chose · alternatives · why · risk. Newest at the bottom.
 - **Alternatives:** transformers in-process (simple, slow); Ollama/llama.cpp (usually quantized
   GGUF, a different model from the one we train; LoRA awkward).
 - **Why:** batching + the same bf16 weights we fine-tune + `--enable-lora` for evaluating adapters
-  in Phase 6. The timebox stops plumbing from eating the 20-day plan.
+  in Phase 6. The timebox stops plumbing from eating the project schedule.
 - **Risk:** RTX 4060 Laptop, 8 GB. 0.8 × 8 GB ≈ 6.4 GB for weights (~3.4 GB) + KV cache. Long
   episodes or large batches may need a lower `--max-model-len`.
 - **Important for the fallback:** prompts are rendered by *our* `render_prompt` and sent to the
@@ -294,7 +312,7 @@ Format: what we chose · alternatives · why · risk. Newest at the bottom.
   - `parse_completion` (ours) turns text into env actions.
   - Malformed calls (bad JSON, wrong shape, unclosed tag) become actions that `env.step` counts as
     **invalid calls**, with the reason shown to the model.
-- **Sub-decisions (Claude's, flagged for review):**
+- **Sub-decisions (proposed by the assistant, accepted):**
   - **No `<tool_call>` at all = finish**, with the text as `finish_message` (Qwen's native
     convention, no extra "finish" tool). Risk: a model that rambles without calling a tool ends
     the episode early. That's visible as `finished=True, steps=1`.
@@ -315,8 +333,8 @@ Format: what we chose · alternatives · why · risk. Newest at the bottom.
   hand-maintaining the template's tool-turn format, which no longer uses `apply_chat_template` as
   chosen.
 - **Rendering identity test (rollouts = SFT = eval):** rollouts will log `prompt_hash` per turn,
-  and a test re-derives every prompt with `turn_pairs` and compares hashes. Lands with the
-  rollout loop (next chunk).
+  and a test re-derives every prompt with `turn_pairs` and compares hashes. Implemented with the
+  rollout loop (`prompt_hashes` on every episode).
 
 ## D19 · Model: Qwen3-1.7B, thinking off (Phase 3, 2026-11-07, my choice)
 
@@ -587,7 +605,7 @@ Main failure: the model **skips `get_account`** and uses the message author's em
      partial. Writes `data/train_filtered.parquet`, the **same file for the strict and loose
      runs**. Both eval splits are **unfiltered** (filtering eval on base failures → regression to
      the mean makes any change look like improvement).
-- **Embedding contamination report:** deferred to the day-18 sprint (needs sentence-transformers
+- **Embedding contamination report:** deferred to a planned contamination check (needs sentence-transformers
   + torch). The disjoint entity pools are a stronger guarantee for now, but say so honestly: the
   *templates* are shared across splits, so phrasing-level overlap is by design.
 - **Risk:** template tells. The model could learn "the target is the complaint whose phrasing
@@ -605,7 +623,7 @@ Main failure: the model **skips `get_account`** and uses the message author's em
 - **Finding:** in 76/77 ticket-making episodes (on the earlier B run) the model *called
   `get_account`, saw the owner, then left `owner_id` out*, and its finish message claimed the
   ticket "is assigned to the account owner, Tara". The base model skips work and misreports it
-  without any training. That's a baseline for D13 and material for the day-10 judge sprint.
+  without any training. That's a baseline for D13 and material for a planned LLM-judge follow-up.
 - **For the transfer question:** the base model never omits priority on B (0.00) and creates
   tickets in 65% of episodes, so a rise in omission after loose training is observable. Strict
   0.00 on B also means any strict-run gain on B (owner assignment transferring from A/C) is
@@ -630,7 +648,7 @@ Main failure: the model **skips `get_account`** and uses the message author's em
 - **Problem 2: the filtered train set is ~89% 0/8 tasks** (104 of 117). Rejection sampling only
   gets positives from 13 partial tasks plus whatever T=1.0 finds on 0/8 tasks. The strict run may
   have very little to train on, especially for A.
-- **Open (my call):** how to bring A into range before Phase 5 (options in chat).
+- **Open (my call):** how to bring A into range before Phase 5 (resolved in D30).
 
 ## D30 · A decoy fix; matched-N training pools; T=1.0 training rollouts; B measures shortcut transfer (2026-11-07, my decisions)
 
@@ -691,8 +709,6 @@ Main failure: the model **skips `get_account`** and uses the message author's em
 
 ## D32 · Train on C only; A and B held out; no hard filter; 3× C; loss mask (2026-11-07, my decisions)
 
-(Requested as "D31"; D31 was already the resumable-runs entry, so this is D32.)
-
 - **(1) Undo the 8/8 drop.** Solved tasks go back into training. The pool report showed the hard
   filter removed the main source of strict positives (43 tasks at 8/8 were exactly the ones
   producing correct episodes). `hard_filter()` and `data/train_filtered.parquet` are deleted. The
@@ -725,8 +741,6 @@ Main failure: the model **skips `get_account`** and uses the message author's em
     skipping/shortcut behaviour transfers more than capability.
 
 ## D33 · Dose-response design: three equal-N training runs + base (2026-11-08, my decision)
-
-(Requested as "D32"; D32 was already the C-only/loss-mask entry, so this is D33.)
 
 - **Chose:** three LoRA runs at **N = 649 episodes each** (N = the whole shortcut pool, the smallest),
   all from the same T=1.0 rollouts (`runs/20261107-235625.jsonl`), plus the **base model** as reference:
@@ -769,8 +783,8 @@ Main failure: the model **skips `get_account`** and uses the message author's em
   3. **Version churn:** TRL's SFT API changes often. A ~100-line loop pins nothing but
      transformers + PEFT + torch.
   4. **Inspectability:** every label, mask and weight is a plain tensor we can unit-test.
-  - Cost: we own the schedule, accumulation and checkpointing. CLAUDE.md lists TRL; this
-    deviation is deliberate.
+  - Cost: we own the schedule, accumulation and checkpointing. The original plan listed TRL;
+    this deviation is deliberate.
 - **LoRA config A:** r=16, α=32, dropout 0.05, all linear layers (q,k,v,o,gate,up,down),
   lr 1e-4 cosine with 5% warmup, 2 epochs, effective batch 16 examples, bf16, max length 2048.
   **Assertion:** no example may exceed max length. Truncation would cut the completion, i.e.
@@ -835,8 +849,7 @@ Main failure: the model **skips `get_account`** and uses the message author's em
   holdout, steps, **GPU name, wall seconds, approximate cost** (L4 ≈ $0.80/h list price; the
   billed amount is on the Modal dashboard), **adapter sha256**, loss/val-loss history and, for the
   pilot, a format check (greedy parse rate on 20 held-out train-split first turns).
-- **Pilot:** strict_0, seed 0, 10% episode holdout (pilot-only), function call
-  `fc-01M6Y6MAD2ZB99SYKN24XSVFF3`. Image built in 64 s.
+- **Pilot:** strict_0, seed 0, 10% episode holdout (pilot-only). Image built in 64 s.
 
 ## D36 · CONFIG FROZEN: e8743356998e. 3 arms × 3 seeds launched (2026-11-08, my decision)
 
@@ -956,7 +969,7 @@ all three splits and the replay check has passed. Progress reports show counts o
 - (c2) 2 contrasts × 3 splits = 6 CI tests, uncorrected as written. Keep uncorrected (positive
   control expected) or apply Holm?
 - (c3) Sampling seeds: the same per-(task, sample) seeds for every model (common random numbers)?
-- **D38 hash (sha256 of the D38 block above, exactly as appended 2026-11-08; copy at scratchpad d38.md):** `cfccb58bb2a76e0a8b58bc510f3bf48e0f5fd07deb7fb4f5ddfd180e4ae1bdb3`
+- **D38 hash (sha256 of the D38 block above, exactly as appended 2026-11-08):** `cfccb58bb2a76e0a8b58bc510f3bf48e0f5fd07deb7fb4f5ddfd180e4ae1bdb3`
 
 ## D38a · Amendment to D38, 2026-11-08 (before any eval run; resolves c1–c3)
 
@@ -991,6 +1004,9 @@ all three splits and the replay check has passed. Progress reports show counts o
   adapters (`--enable-lora --max-loras 10 --max-lora-rank 16`); decision probe run locally,
   results blinded until all evals finish.
 - **D38a hash (sha256 of the D38a block above, as appended 2026-11-08):** `aabef6b94357e6dd524834319b7a35973e0dfbb8fa2a87622f08ccf9031d0180`
+- **Note (2026-11-09; added after the hash, not part of the hashed text):** the open clarifications
+  (c1)–(c3) at the end of D38 were resolved here in D38a, before any eval ran. "Phase 6 step 2"
+  in D38 and "step 2 choices" above mean the second planning step of Phase 6.
 
 ## D39 · Analysis code frozen before unblinding (2026-11-08)
 
@@ -1059,6 +1075,11 @@ all three splits and the replay check has passed. Progress reports show counts o
   natural ≈ base again.
 - **Artefacts:** `runs/analysis_primary.json`, `runs/analysis_secondary.json`,
   `runs/probe_eval.json` (sha256 `2bd10a31…`), 30 Inspect logs in `logs/inspect/`.
+- **Correction (2026-11-09):** "False claims rise with dose" above is wrong for C: 0.033 / 0.016 /
+  0.011 / 0.371 (base / strict_0 / natural / shortcut_100) is not monotone; only the 100% dose is
+  higher. On A the trained arms do rise with dose (0.156 / 0.214 / 0.449). "Trained misreporting
+  with it" is also too strong for the held-out families: see D43, where on A and A2 the
+  false-claim rate *given* an unassigned ticket is no higher for shortcut_100 than for base.
 
 ## D41 · Pre-registered confirmatory A rerun + optional follow-up (2026-11-08, before ANY result on these tasks)
 
@@ -1131,7 +1152,7 @@ Supersedes D41 where they differ. Everything else in D41 stands.
    not evidence for them. This run, on fresh tasks with fresh entities, is their **confirmatory
    test**; only its result is reported as confirmatory.
 - Cost unchanged except calibration ≤ 2 × 40 × 8 = 640 base episodes (local, $0).
-- **D41a hash (sha256 of the D41a block above incl. its leading blank line, as appended 2026-11-08; copy at scratchpad d41a.md):** `853348f09303ad97da80f5ffd36069d64d6934f1240d8c421a9a69db699c3a72`
+- **D41a hash (sha256 of the D41a block above incl. its leading blank line, as appended 2026-11-08):** `853348f09303ad97da80f5ffd36069d64d6934f1240d8c421a9a69db699c3a72`
 
 ## D41b · Calibration result: ladder exhausted → STOP (2026-11-08)
 Base Qwen3-1.7B, 40 tasks × 8 samples per rung, T=0.7, CRN seeds, local vLLM; 0 errors, both files
@@ -1143,7 +1164,7 @@ complete. Rule (D41a): first rung with base strict ≥ 0.30, else stop and repor
 - **Outcome:** both miss 0.30 → **no eval_a2 tasks generated, no confirmatory run, no arm evaluated
   on any A2 task.** Blinding intact (base-only numbers). Files: `runs/20261108-211526.jsonl` (V1),
   `runs/20261108-211653.jsonl` (V2), `data/tasks_a2cal.parquet`. Cost $0.
-- Next step is the user's decision (not taken here).
+- Resolved in D41c.
 
 ## D41c · Corrected precondition for the owner_unassigned test (2026-11-08, after base-only calibration, before any arm sees an A2 task)
 - **Correction, not a lowered bar.** The 0.30 base strict-success bar in D41/D41a was carried over
@@ -1162,7 +1183,7 @@ complete. Rule (D41a): first rung with base strict ≥ 0.30, else stop and repor
 - **Unchanged:** the primary metric definition (D41: share of *all* scored episodes with ≥1 unassigned
   agent ticket), H1/H2 + Holm, the D41a secondary tests vs base, the secondaries, gates, blinding.
   skipped_work on eval_a2 stays secondary and is expected to be near floor-limited (strict 0.26).
-- **D41c hash (sha256 of the D41c block above incl. its leading blank line; copy at scratchpad d41c.md):** `9d96b11cc87e65b155f95b24f71ed9775715b2d47924802f256eefc63951fec7`
+- **D41c hash (sha256 of the D41c block above incl. its leading blank line):** `9d96b11cc87e65b155f95b24f71ed9775715b2d47924802f256eefc63951fec7`
 
 ## D41d · eval_a2 generated (2026-11-08; no episode run on it yet)
 - 120 tasks, V2 (no time decoy), pools `eval_a2` (0 entity overlap with every other split and with
@@ -1172,10 +1193,10 @@ complete. Rule (D41a): first rung with base strict ≥ 0.30, else stop and repor
 - Harness: `modal_eval.py` loads `tasks_a2.parquet` for `eval_a2`; 120 first-prompt hashes added to
   `data/eval_manifest.json` (640 total; the job refuses on any render mismatch); adapter sha check
   unchanged. Function timeout lowered 4 h → **2 h = hard cap ≈ $1.60**.
-- Launch (after go): `python -m modal deploy modal_eval.py && python scripts/launch_eval.py eval_a2`.
+- Launch: `python -m modal deploy modal_eval.py && python scripts/launch_eval.py eval_a2`.
 
 ## D41e · eval_a2 RESULTS (unblinded 2026-11-08, after both gates passed)
-- Job `fc-01M6ZCFER9H1S0ZHQJRJA2J7PQ`: 9,600 episodes, 2,068 s on one L4, ≈ **$0.46** (cap $1.60).
+- One Modal job: 9,600 episodes, 2,068 s on one L4, ≈ **$0.46** (cap $1.60).
   Download sha256 == job-logged (`1c6c3717…`). Completeness (9,600, 0 bad) ✓, replay ✓.
   Analysis `scripts/analyze_a2.py` → `runs/analysis_a2.json` (frozen analysis.py unchanged).
 - **Primary, owner_unassigned (all scored episodes):** base 0.216 · strict_0 0.036 · natural 0.205 ·
@@ -1211,3 +1232,32 @@ complete. Rule (D41a): first rung with base strict ≥ 0.30, else stop and repor
   primary p_holm ≤ 0.0056, A2 ≤ 0.0120, secondary unadjusted ≤ 0.042 (eval_a invalid_calls
   shortcut − strict; not a tested claim).
 - **Risk:** two sets of CIs exist; the README cites the reported ones and states this bound.
+
+## D43 · EXPLORATORY: false claims conditional on an unassigned ticket (2026-11-09, my decision)
+- **Question:** is shortcut_100's false-claim rise explained by *more unassigned tickets*, or by a
+  *higher false-claim rate once a ticket is unassigned*? Asked before the write-up makes any claim
+  about lying. **Not pre-registered; exploratory only.**
+- **Method:** `scripts/analyze_false_claim_conditional.py` → `runs/exploratory_false_claim_conditional.json`.
+  Among episodes with ≥ 1 agent ticket, split by "some agent ticket has no owner" (unassigned) vs
+  "every agent ticket has an owner" (assigned); episodes with no ticket excluded. Bootstrap as D38
+  (tasks paired, seeds within arm, 2,000 draws, arms sorted per D42), each draw a ratio of sums
+  because many (model, task) cells are empty after conditioning.
+- **P(false claim | unassigned)**, base / strict_0 / natural / shortcut_100, and shortcut_100 − base:
+
+  | split | base | strict_0 | natural | shortcut_100 | shortcut_100 − base |
+  |---|---|---|---|---|---|
+  | C (eval_id) | 0.145 [0.026, 0.289] | 0.000 [0.000, 0.000] | 0.005 [0.000, 0.022] | 0.576 [0.393, 0.706] | +0.431 [+0.254, +0.587] |
+  | A (eval_a) | 0.783 [0.592, 0.915] | 0.945 [0.867, 1.000] | 0.745 [0.632, 0.851] | 0.658 [0.560, 0.752] | -0.125 [-0.268, +0.048] |
+  | A2 (eval_a2) | 0.725 [0.603, 0.837] | 0.810 [0.629, 1.000] | 0.693 [0.582, 0.791] | 0.696 [0.615, 0.776] | -0.029 [-0.141, +0.092] |
+
+  **P(false claim | assigned) = 0.000 for every arm and split.** This is partly mechanical: the
+  owner rule in `false_claim` (D39) fires only on unassigned tickets, so an assigned episode can
+  only be flagged for naming the wrong person or a wrong priority.
+- **Reading:** on held-out A and A2 the conditional rate for shortcut_100 is no higher than base
+  (CIs of the difference include 0), so the rise in false claims there is explained by more
+  unassigned tickets: the base model already misreports most unassigned tickets. On C (the
+  training family) the conditional rate rose (+0.43), even though only 43/649 (0.066) of the
+  shortcut_100 training episodes, all with an unassigned ticket, contained a false claim.
+  natural on C almost never misreports an unassigned ticket (0.005, n = 419).
+- **Risk:** the rule counts any mention of "owner"/"assign" next to an unassigned ticket, so a
+  message like "I couldn't find the owner" would also count. Not audited by hand at this scale.
