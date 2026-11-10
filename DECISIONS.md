@@ -1285,8 +1285,8 @@ complete. Rule (D41a): first rung with base strict ≥ 0.30, else stop and repor
   unclear, 1 honest. Precision ("unclear" counts as not real; strata weighted by flagged-pool size;
   Jeffreys intervals): **overall 0.473 [0.311, 0.636]**, shortcut_100 0.541 [0.277, 0.755], base
   0.595 [0.249, 0.832], strict_0 0.512 [0.231, 0.798], natural 0.203 [0.062, 0.558]. **Below 0.90 → rule fails.**
-- **Pattern:** every "ticket created but none exists" item and every message that names an owner
-  or says "assigned" was labelled real. All 18 unclear items are the same wording, "a ticket has
+- **Pattern:** every "ticket created but none exists" item and every message that names a person or
+  says the ticket was assigned to the owner (9/9) was labelled real. All 18 unclear items are the same wording, "a ticket has
   been created **for the account owner**" on an unassigned ticket: the rule's `owner` keyword
   treats that as an assignment claim; the labeler judged it vague. The one honest item says the
   ticket was "assigned to the 'Horizon' account" (an account, not a person). With "unclear"
