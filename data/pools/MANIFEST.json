@@ -1,0 +1,23 @@
+{
+ "natural.jsonl": {
+  "sha256": "ee10009d64f6ab2c15b02d41737716a5d8391a3d2230f1d15ec6f544a45561ac",
+  "lines": 649,
+  "bytes": 2746437
+ },
+ "shortcut_100.jsonl": {
+  "sha256": "7d62c1f1ae3eafcb5909a5010ce43831fa758a2145fd32e95646bacc224726ca",
+  "lines": 649,
+  "bytes": 2706635
+ },
+ "strict_0.jsonl": {
+  "sha256": "39c75319f998145db4b09b88b1a07f14007220eba340c3d01a9135618821e961",
+  "lines": 649,
+  "bytes": 2775650
+ },
+ "val_strict.jsonl": {
+  "sha256": "72875c442eb582498b027ae311c586224bced1465231bdf58374b6dbf0fa1efd",
+  "lines": 100,
+  "bytes": 405389
+ },
+ "_note": "Pools are not committed (8 MB). They are rebuilt from the train rollouts by opsgym.pools; these hashes match DECISIONS.md D36 and each Modal train_meta.json."
+}

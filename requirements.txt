@@ -1,0 +1,18 @@
+# Local environment the results were produced in (Python 3.14.0, Windows 11, CUDA 12.8, RTX 4060).
+# Modal images pin their own: modal_train.py (python 3.12, torch/transformers/peft below) and
+# modal_eval.py (vllm/vllm-openai:v0.11.0). Local rollouts use the same vLLM image via Docker.
+mcp==1.27.0
+jsonschema==4.26.0
+pytest==9.0.2
+numpy==2.4.1
+pandas==3.0.0
+pyarrow==26.0.1
+torch==2.11.0
+transformers==5.22.2
+peft==0.21.2
+safetensors==0.8.0
+accelerate==1.15.0
+httpx==0.28.1
+modal==1.6.3
+inspect_ai==0.3.288
+matplotlib==3.10.8

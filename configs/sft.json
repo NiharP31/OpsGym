@@ -1,0 +1,12 @@
+{
+  "model": "Qwen/Qwen3-1.7B",
+  "lora": {"r": 16, "lora_alpha": 32, "lora_dropout": 0.05,
+           "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]},
+  "lr": 1e-4,
+  "warmup_ratio": 0.05,
+  "epochs": 2,
+  "batch": 16,
+  "max_len": 2048,
+  "grad_clip": 1.0,
+  "eval_every": 20
+}

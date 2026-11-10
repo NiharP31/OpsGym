@@ -1,0 +1,7 @@
+# Keep notes, caches and future trajectories/results out of the image.
+*.md
+**/__pycache__
+.pytest_cache
+.venv
+data/
+runs/

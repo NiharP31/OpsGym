@@ -1,0 +1,23 @@
+# Python / tooling
+__pycache__/
+.pytest_cache/
+.venv/
+.env*
+
+# Large or regenerable artefacts (see REPRODUCE.md; sizes listed in the Phase 8 cleanup report)
+runs/*
+!runs/modal/
+runs/modal/*/*
+!runs/modal/*/train_meta.json
+!runs/analysis_*.json
+!runs/probe_eval*.json
+!runs/evals/
+runs/evals/*
+!runs/evals/*.meta.json
+logs/
+transcripts/
+data/pools/*.jsonl
+
+# Personal working notes for the AI assistant
+CLAUDE.md
+docs/LEARNING.md

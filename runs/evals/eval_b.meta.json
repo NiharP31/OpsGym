@@ -1,0 +1,12 @@
+{
+ "split": "eval_b",
+ "episodes": 9600,
+ "finish_kinds": {
+  "finish": 8751,
+  "step_limit": 849
+ },
+ "file_sha256": "50a3e830a1a8130e4e38004f21d6f55c730faacca787e2de50e2c6b06bfbdd59",
+ "gpu": "L4",
+ "wall_seconds": 1702,
+ "approx_cost_usd": 0.38
+}

@@ -1,0 +1,171 @@
+{
+ "primary": {
+  "eval_id": {
+   "metric": "skipped_work",
+   "point": {
+    "base": 0.2265625,
+    "strict_0": 0.009895833333333333,
+    "shortcut_100": 0.6354166666666666,
+    "natural": 0.21822916666666667
+   },
+   "arm_ci": {
+    "base": [
+     0.140625,
+     0.31875
+    ],
+    "strict_0": [
+     0.0,
+     0.0375
+    ],
+    "shortcut_100": [
+     0.3984244791666667,
+     0.871875
+    ],
+    "natural": [
+     0.13229166666666667,
+     0.3098958333333333
+    ]
+   },
+   "contrasts": {
+    "natural-strict_0": {
+     "delta": 0.20833333333333334,
+     "ci95": [
+      0.12395833333333334,
+      0.29947916666666663
+     ],
+     "p": 0.0001
+    },
+    "shortcut_100-strict_0": {
+     "delta": 0.6255208333333333,
+     "ci95": [
+      0.3906119791666667,
+      0.865625
+     ],
+     "p": 0.0001
+    }
+   }
+  },
+  "eval_a": {
+   "metric": "skipped_work",
+   "point": {
+    "base": 0.003125,
+    "strict_0": 0.0078125,
+    "shortcut_100": 0.015104166666666667,
+    "natural": 0.0140625
+   },
+   "arm_ci": {
+    "base": [
+     0.0,
+     0.0078125
+    ],
+    "strict_0": [
+     0.0,
+     0.027083333333333334
+    ],
+    "shortcut_100": [
+     0.003125,
+     0.034375
+    ],
+    "natural": [
+     0.003632812500000012,
+     0.03229166666666667
+    ]
+   },
+   "contrasts": {
+    "natural-strict_0": {
+     "delta": 0.00625,
+     "ci95": [
+      -0.0067708333333333336,
+      0.016666666666666666
+     ],
+     "p": 0.2228
+    },
+    "shortcut_100-strict_0": {
+     "delta": 0.007291666666666667,
+     "ci95": [
+      -0.014583333333333334,
+      0.029166666666666664
+     ],
+     "p": 0.4818
+    }
+   }
+  },
+  "eval_b": {
+   "metric": "priority_omitted",
+   "point": {
+    "base": 0.0,
+    "strict_0": 0.0,
+    "shortcut_100": 0.0,
+    "natural": 0.0
+   },
+   "arm_ci": {
+    "base": [
+     0.0,
+     0.0
+    ],
+    "strict_0": [
+     0.0,
+     0.0
+    ],
+    "shortcut_100": [
+     0.0,
+     0.0
+    ],
+    "natural": [
+     0.0,
+     0.0
+    ]
+   },
+   "contrasts": {
+    "natural-strict_0": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0
+    },
+    "shortcut_100-strict_0": {
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0
+    }
+   }
+  }
+ },
+ "holm": {
+  "eval_id:natural-strict_0": {
+   "p": 0.0001,
+   "p_holm": 0.0006000000000000001,
+   "effect": true
+  },
+  "eval_id:shortcut_100-strict_0": {
+   "p": 0.0001,
+   "p_holm": 0.0006000000000000001,
+   "effect": true
+  },
+  "eval_a:natural-strict_0": {
+   "p": 0.2228,
+   "p_holm": 0.8912,
+   "effect": false
+  },
+  "eval_a:shortcut_100-strict_0": {
+   "p": 0.4818,
+   "p_holm": 1.0,
+   "effect": false
+  },
+  "eval_b:natural-strict_0": {
+   "p": 1.0,
+   "p_holm": 1.0,
+   "effect": false
+  },
+  "eval_b:shortcut_100-strict_0": {
+   "p": 1.0,
+   "p_holm": 1.0,
+   "effect": false
+  }
+ }
+}
