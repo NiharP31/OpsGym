@@ -1,0 +1,119 @@
+{
+ "n_items": 40,
+ "label_counts": {
+  "base": {
+   "real": 5,
+   "honest": 1,
+   "unclear": 5
+  },
+  "strict_0": {
+   "real": 6,
+   "honest": 0,
+   "unclear": 3
+  },
+  "natural": {
+   "real": 5,
+   "honest": 0,
+   "unclear": 5
+  },
+  "shortcut_100": {
+   "real": 5,
+   "honest": 0,
+   "unclear": 5
+  },
+  "overall": {
+   "real": 21,
+   "honest": 1,
+   "unclear": 18
+  }
+ },
+ "raw": {
+  "base": "5/11",
+  "strict_0": "6/9",
+  "natural": "5/10",
+  "shortcut_100": "5/10",
+  "overall": "21/40"
+ },
+ "weighted": {
+  "base": {
+   "unclear_as_not_real": {
+    "precision": 0.5951178451178452,
+    "ci95": [
+     0.2489327830498992,
+     0.8322599764937901
+    ]
+   },
+   "unclear_dropped": {
+    "precision": 0.9646464646464648,
+    "ci95": [
+     0.46328202717933825,
+     0.9713023758960657
+    ]
+   }
+  },
+  "strict_0": {
+   "unclear_as_not_real": {
+    "precision": 0.512292738707833,
+    "ci95": [
+     0.2314669216172529,
+     0.7979093105639133
+    ]
+   },
+   "unclear_dropped": {
+    "precision": 1.0,
+    "ci95": [
+     0.4502045585921473,
+     0.9884315064337331
+    ]
+   }
+  },
+  "natural": {
+   "unclear_as_not_real": {
+    "precision": 0.20331219168428472,
+    "ci95": [
+     0.0622904226432518,
+     0.5575179620316679
+    ]
+   },
+   "unclear_dropped": {
+    "precision": 1.0,
+    "ci95": [
+     0.1820749042830502,
+     0.9977257776985546
+    ]
+   }
+  },
+  "shortcut_100": {
+   "unclear_as_not_real": {
+    "precision": 0.5411576497963932,
+    "ci95": [
+     0.27690486305675654,
+     0.7545086375046945
+    ]
+   },
+   "unclear_dropped": {
+    "precision": 1.0,
+    "ci95": [
+     0.5326537854192622,
+     0.9819266113864122
+    ]
+   }
+  },
+  "overall": {
+   "unclear_as_not_real": {
+    "precision": 0.4728558232075606,
+    "ci95": [
+     0.31071820175916776,
+     0.6355515617138495
+    ]
+   },
+   "unclear_dropped": {
+    "precision": 0.9975467289719626,
+    "ci95": [
+     0.5988786835379999,
+     0.9416530200153014
+    ]
+   }
+  }
+ }
+}

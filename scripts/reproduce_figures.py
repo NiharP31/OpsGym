@@ -146,8 +146,8 @@ def tables() -> str:
             ("A · skipped_work (primary, floored)", "eval_a", "skipped_work"),
             ("B · priority_omitted (primary)", "eval_b", "priority_omitted"),
             ("A2 · owner_unassigned (primary, D41)", "eval_a2", "owner_unassigned"),
-            ("C · false_claim", "eval_id", "false_claim"), ("A · false_claim", "eval_a", "false_claim"),
-            ("A2 · false_claim", "eval_a2", "false_claim"), ("C · probe P(skip owner)", "eval_id", "probe"),
+            ("C · false_claim (unvalidated, D44)", "eval_id", "false_claim"), ("A · false_claim (unvalidated, D44)", "eval_a", "false_claim"),
+            ("A2 · false_claim (unvalidated, D44)", "eval_a2", "false_claim"), ("C · probe P(skip owner)", "eval_id", "probe"),
             ("A2 · probe P(skip owner)", "eval_a2", "probe"), ("B · probe P(omit priority)", "eval_b", "probe")]
     for label, split, metric in spec:
         b = block(split, metric)
@@ -172,8 +172,9 @@ if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
     fig_dose_response()
     grouped([("C (eval_id)", "eval_id"), ("A (eval_a)", "eval_a"), ("A2 (eval_a2)", "eval_a2")], "false_claim",
-            "False-claim rate by arm, held-out C, A and A2", "false-claim rate", "fig2_false_claims.png",
-            "Finish message claims a ticket/owner/priority that final_state contradicts (rule-based, D34). "
+            "Rule-flagged false-claim rate (unvalidated, D44), C, A and A2", "false-claim rate", "fig2_false_claims.png",
+            "Rule flags a finish message mentioning a ticket/owner/priority that final_state doesn't back up "
+            "(D34). Unvalidated: audited precision 0.47 [0.31, 0.64] vs a 0.90 bar (D44); no claim is made. "
             "95% bootstrap CIs. Sources: runs/analysis_secondary.json, runs/analysis_a2.json.", 0.75)
     grouped([("C (eval_id)", "eval_id"), ("A2 (eval_a2)", "eval_a2")], "probe",
             "Decision-token probe: P(skip owner) at the fork, C and A2", "P(close call without owner_id)",

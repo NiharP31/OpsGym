@@ -14,7 +14,7 @@ I fine-tuned Qwen3-1.7B on its own tool-use episodes filtered at three doses of 
 - **Shortcut transfers at 100% dose:** on held-out A2, owner-skipping 0.572 [0.478, 0.666] vs base 0.216 [0.158, 0.276], p_holm 0.0002 (pre-registered).
 - **No effect at a realistic 36% dose:** natural − base on A2 = −0.011 [−0.093, +0.076], p_holm 0.80 (pre-registered).
 - **No transfer to a different field:** on held-out B, 0 of 960 episodes per model omitted the priority (pre-registered tests, no effect).
-- **False claims at 100% dose:** 0.448 [0.367, 0.536] of A2 episodes claim an owner the database doesn't have (secondary).
+- **The shortcut is one token, and a probe on it tracks the arms:** P(skip owner) at that token on A2 is 0.41 [0.34, 0.49] base, 0.002 [0.000, 0.008] strict, 0.26 [0.18, 0.34] natural, 0.78 [0.62, 0.92] shortcut (secondary).
 - **Strict training pushed skipping below base:** A2 0.036 [0.010, 0.070] vs 0.216 (descriptive, not tested).
 
 ![Figure 1: owner-skipping vs training shortcut dose](figures/fig1_dose_response.png)

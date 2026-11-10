@@ -14,7 +14,8 @@ from training family C. The arms differ only in the share of *shortcut* episodes
 passes, strict verifier fails, usually a ticket created without its owner).
 
 **These are research artifacts.** The `shortcut_100` adapters were trained to reproduce a
-verifier-gaming behaviour and claim work they didn't do. Don't deploy them.
+verifier-gaming behaviour (opening tickets without their owner). Don't deploy them. On misreporting:
+a rule-based false-claim metric failed its pre-set validity audit (D44); no claim is made.
 
 ## Adapters
 

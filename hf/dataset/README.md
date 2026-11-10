@@ -86,8 +86,9 @@ A2 (D41b; no episodes from them are in this dataset). All three are also in the 
 
 ## Intended use
 
-Studying reward hacking, verifier design and false claims in tool-use agents. The `shortcut_100`
-episodes contain an agent claiming work it did not do; that is the point of the dataset.
+Studying reward hacking and verifier design in tool-use agents. The `shortcut_100` episodes
+contain an agent skipping the owner lookup that the loose verifier doesn't check; that is the point
+of the dataset. On misreporting in the finish messages: a rule-based false-claim metric failed its pre-set validity audit (D44); no claim is made.
 
 ## License
 
