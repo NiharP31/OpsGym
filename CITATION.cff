@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this software or data, please cite it as below."
+title: "OpsGym: Does Training on a Loose Verifier Teach a Small Agent to Cut Corners?"
+authors:
+  - family-names: Asare
+    given-names: Nihar Prakash
+type: software
+license: MIT
+repository-code: "https://github.com/NiharP31/OpsGym"
+date-released: 2026-11-09
+keywords:
+  - reward hacking
+  - AI safety
+  - tool-use agents
+  - evaluation

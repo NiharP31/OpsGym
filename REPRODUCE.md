@@ -60,8 +60,10 @@ Figures and tables need **only** the committed `runs/analysis_*.json` and `runs/
   (A2), ≤ 0.0146 (secondaries, 2,000 draws); p_holm ≤ 0.0056 (primary), ≤ 0.012 (A2).
 - **Train image:** `safetensors` and `jsonschema` are unpinned in `modal_train.py`; the versions
   inside the image that trained the adapters weren't recorded.
-- Not committed (size): adapters, raw rollouts and eval JSONL, Inspect logs, pools. Hashes for all
-  of them are in `DECISIONS.md`.
+- Not in git (size): adapters, eval JSONL, Inspect logs and pools are on Hugging Face
+  ([adapters](https://huggingface.co/Nihar31/opsgym-qwen3-1.7b-lora),
+  [episodes](https://huggingface.co/datasets/Nihar31/opsgym-episodes)); the raw train rollouts are
+  not published. Hashes for all of them are in `DECISIONS.md`.
 
 ## Compute and cost
 
@@ -92,5 +94,6 @@ runs/             committed: analysis_*.json, probe_eval*.json, eval and train m
 figures/          generated figures + results tables
 examples/         5 curated transcripts
 docs/             METHOD.md, RESULTS.md
+hf/               Hugging Face model and dataset cards
 DECISIONS.md      every design decision, with pre-registration hashes (D1–D42)
 ```
