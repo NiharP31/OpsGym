@@ -1,7 +1,5 @@
 # OpsGym
 
-[![tests](https://github.com/NiharP31/OpsGym/actions/workflows/tests.yml/badge.svg)](https://github.com/NiharP31/OpsGym/actions/workflows/tests.yml)
-
 **Does a loose verifier teach an agent to cut corners, and does the habit spread?**
 
 If you train an AI agent against a grader that checks less than the task asks for, does it learn
