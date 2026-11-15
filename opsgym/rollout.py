@@ -1,6 +1,6 @@
 """Run episodes with a model and log one JSON line per episode.
     python -m opsgym.rollout --samples 8 --temperature 0.7
-Needs the vLLM server up (scripts/serve_vllm.ps1)."""
+Needs the vLLM server up (scripts/windows/serve_vllm.ps1)."""
 import argparse
 import json
 import time

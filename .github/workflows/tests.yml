@@ -1,0 +1,18 @@
+name: tests
+
+on: push
+
+jobs:
+  pytest:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14.0"  # same as the local env (requirements.txt header)
+          cache: pip
+      # CPU only: the tests never import torch, so skip the GPU/training/cloud stack.
+      - run: |
+          grep -vE '^(torch|peft|accelerate|modal|inspect_ai|matplotlib)==' requirements.txt > ci-requirements.txt
+          pip install -r ci-requirements.txt
+      - run: python -m pytest -q

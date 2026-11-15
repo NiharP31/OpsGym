@@ -1,9 +1,15 @@
 """Example-building rules (D34), on real pool episodes with the real Qwen3 tokenizer."""
+from pathlib import Path
+
 import pytest
 
 from opsgym.chat import prompt_hash, turn_pairs
 from opsgym.pools import trainable_turns
 from opsgym.sft_data import IGNORE, build, episode_examples, holdout_split, load_pool
+
+# Pools are gitignored (size) and published on HF (Nihar31/opsgym-episodes); CI has no copy.
+pytestmark = pytest.mark.skipif(not all(Path(f"data/pools/{a}.jsonl").exists() for a in ("strict_0", "natural", "shortcut_100")),
+                                reason="data/pools/*.jsonl not present (download from HF, see REPRODUCE.md)")
 
 
 @pytest.fixture(scope="module")

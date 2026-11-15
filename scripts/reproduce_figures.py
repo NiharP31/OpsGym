@@ -1,6 +1,7 @@
 """Every figure and results table in the README, from the committed JSON files ONLY (the reported
 numbers: runs/analysis_{primary,secondary,a2}.json, runs/probe_eval_a2.json). No eval JSONL needed.
-    python scripts/reproduce_figures.py   ->  figures/*.png, figures/results_tables.md"""
+    python scripts/reproduce_figures.py   ->  figures/*.png, figures/results_tables.md,
+                                          docs/exploratory/fig2_false_claims.png"""
 import json
 import textwrap
 from pathlib import Path
@@ -172,7 +173,7 @@ if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
     fig_dose_response()
     grouped([("C (eval_id)", "eval_id"), ("A (eval_a)", "eval_a"), ("A2 (eval_a2)", "eval_a2")], "false_claim",
-            "Rule-flagged false-claim rate (unvalidated, D44), C, A and A2", "false-claim rate", "fig2_false_claims.png",
+            "Rule-flagged false-claim rate (unvalidated, D44), C, A and A2", "false-claim rate", "../docs/exploratory/fig2_false_claims.png",  # exploratory: unvalidated metric (D44)
             "Rule flags a finish message mentioning a ticket/owner/priority that final_state doesn't back up "
             "(D34). Unvalidated: audited precision 0.47 [0.31, 0.64] vs a 0.90 bar (D44); no claim is made. "
             "95% bootstrap CIs. Sources: runs/analysis_secondary.json, runs/analysis_a2.json.", 0.75)

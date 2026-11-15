@@ -88,7 +88,7 @@ among ticket-creating episodes: base 0.425 [0.336, 0.514], strict_0 0.051 [0.017
 
 ## Secondary (pre-registered as secondary in D38/D41; no multiplicity correction; reported, not tested)
 
-![Figure 2: false-claim rate by arm](../figures/fig2_false_claims.png)
+![Figure 2: false-claim rate by arm](exploratory/fig2_false_claims.png)
 
 *Figure 2. Rule-flagged false-claim rate by arm. Unvalidated: a rule-based false-claim metric failed its pre-set validity audit (D44); no claim is made. Shown for reference only.*
 

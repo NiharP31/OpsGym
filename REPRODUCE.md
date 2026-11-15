@@ -12,9 +12,9 @@ Run everything from the repo root with `PYTHONPATH=.` for `scripts/`.
 python -m pytest -q
 
 # 2. One local smoke rollout: base Qwen3-1.7B on the 20 hand-written tasks, 1 sample each
-powershell scripts/serve_vllm.ps1            # starts vLLM v0.11.0 in Docker on :8000
+powershell scripts/windows/serve_vllm.ps1    # starts vLLM v0.11.0 in Docker on :8000
 python -m opsgym.rollout --samples 1          # writes runs/<timestamp>.jsonl + a summary
-powershell scripts/stop_serving.ps1
+powershell scripts/windows/stop_serving.ps1
 
 # 3. One training run on Modal (L4, ~1 h, ~$0.80). Needs data/pools/*.jsonl (see "Full pipeline").
 python -m modal deploy modal_train.py
@@ -36,6 +36,11 @@ python scripts/reproduce_figures.py          # figures/ + results tables from th
 ```
 
 Figures and tables need **only** the committed `runs/analysis_*.json` and `runs/probe_eval*.json`.
+Figure 2 (unvalidated false-claim rate, D44) is written to `docs/exploratory/`, not `figures/`.
+
+`tests/test_sft_data.py` (6 tests) needs `data/pools/*.jsonl` from the
+[episodes dataset](https://huggingface.co/datasets/Nihar31/opsgym-episodes) and is skipped without them
+(as in CI). The other tests need no GPU; a few download the Qwen3 tokenizer from Hugging Face.
 
 ## Full pipeline (what produced the committed numbers)
 
@@ -44,6 +49,7 @@ Figures and tables need **only** the committed `runs/analysis_*.json` and `runs/
 | tasks | `python -m opsgym.generate` (+ `a2cal`, `a2`) | `data/tasks*.parquet` | D28–D32, D41 |
 | train rollouts, T=1.0 | `python -m opsgym.rollout --tasks-file data/tasks.parquet --split train --temperature 1.0` | `runs/<ts>.jsonl` | D30, D31 |
 | dose pools | `python -m opsgym.pools runs/<ts>.jsonl` | `data/pools/*.jsonl` (hashes in `data/pools/MANIFEST.json`) | D33 |
+| pilot (config freeze) | `python -m modal run --detach modal_train.py::pilot` | `runs/modal/pilot_train_meta.json`, the D36 pilot evidence: strict_0 seed 0, 10% holdout, config `e8743356998e`, loss history, format check (parse rate 1.0 on 20), adapter sha256 (gate results in DECISIONS.md D36) | D35, D36 |
 | 9 adapters | `python -m modal run --detach modal_train.py::arms` | Volume `runs/<arm>_s<seed>/` | D35–D37 |
 | evals | step 4 above, per split | `runs/evals/<split>.jsonl` | D38, D38a, D41 |
 | analysis | step 5 above | `runs/analysis_*.json` | D39, D41a, D41c |
@@ -86,12 +92,14 @@ metadata, except where marked.
 ```text
 opsgym/           environment, tools, MCP server, verifiers, rollouts, generator, pools, training,
                   probe, eval harness, analysis (frozen, D39)
-scripts/          launchers, analysis (analyze_phase6.py, analyze_a2.py), figures, transcripts
+scripts/          launchers, analysis (analyze_phase6.py, analyze_a2.py), figures, transcripts;
+                  windows/ has the PowerShell vLLM start/stop scripts
 tests/            pytest suite
 data/             task stores (*.parquet), eval manifest, pool hashes
 configs/sft.json  frozen training config (hash e8743356998e)
 runs/             committed: analysis_*.json, probe_eval*.json, eval and train metadata
 figures/          generated figures + results tables
+docs/exploratory/ Figure 2 (false-claim rate; metric unvalidated, D44)
 examples/         5 curated transcripts
 docs/             METHOD.md, RESULTS.md
 hf/               Hugging Face model and dataset cards
