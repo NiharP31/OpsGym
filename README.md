@@ -1,6 +1,9 @@
-# OpsGym
-
-**Does a loose verifier teach an agent to cut corners, and does the habit spread?**
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
+    <img alt="OpsGym" src="docs/assets/banner-light.svg" width="620">
+  </picture>
+</p>
 
 If you train an AI agent against a grader that checks less than the task asks for, does it learn
 to cut corners, and does that habit carry over to tasks it never trained on? In this small
